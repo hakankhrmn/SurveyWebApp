@@ -15,10 +15,10 @@ public class TokenManager {
     private static final int validity = 15*60*1000;
     Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public String generateToken(String username){
+    public String generateToken(String userMail){
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(userMail)
                 .setIssuer("kahraman")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + validity))
@@ -27,13 +27,13 @@ public class TokenManager {
     }
 
     boolean tokenValidate(String token){
-        if(getUsernameToken(token) != null && isExpired(token)){
+        if(getUserMailToken(token) != null && isExpired(token)){
             return true;
         }
         return false;
     }
 
-    public String getUsernameToken(String token){
+    public String getUserMailToken(String token){
         Claims claims = getClaims(token);
         return claims.getSubject();
     }

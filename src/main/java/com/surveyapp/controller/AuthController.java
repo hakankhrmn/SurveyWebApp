@@ -28,8 +28,8 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<String> login(@RequestBody  LoginRequest loginRequest){
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
-            return ResponseEntity.ok(tokenManager.generateToken(loginRequest.getUsername()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserMail(),loginRequest.getPassword()));
+            return ResponseEntity.ok(tokenManager.generateToken(loginRequest.getUserMail()));
         }catch (Exception e){
             throw e;
         }
