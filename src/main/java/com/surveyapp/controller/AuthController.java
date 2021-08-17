@@ -1,5 +1,6 @@
 package com.surveyapp.controller;
 
+
 import com.surveyapp.auth.TokenManager;
 import com.surveyapp.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +12,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/login")
 public class AuthController {
 
-
+    @Autowired
     private TokenManager tokenManager;
-    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(TokenManager tokenManager, AuthenticationManager authenticationManager) {
-        this.tokenManager = tokenManager;
-        this.authenticationManager = authenticationManager;
-    }
+    private AuthenticationManager authenticationManager;
 
     @PostMapping
-    public ResponseEntity<String> login(@RequestBody  LoginRequest loginRequest){
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserMail(),loginRequest.getPassword()));
-            return ResponseEntity.ok(tokenManager.generateToken(loginRequest.getUserMail()));
-        }catch (Exception e){
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+            return ResponseEntity.ok(tokenManager.generateToken(loginRequest.getUsername()));
+        } catch (Exception e) {
             throw e;
         }
     }

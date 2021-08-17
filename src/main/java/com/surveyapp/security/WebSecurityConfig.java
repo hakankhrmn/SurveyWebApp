@@ -20,7 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+
+    @Autowired
     private JwtTokenFilter jwtTokenFilter;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -28,27 +33,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         builder.userDetailsService(userService).passwordEncoder(getBCryptPasswordEncoder());
     }
 
-    @Autowired
-    public WebSecurityConfig(JwtTokenFilter jwtTokenFilter, UserService userService) {
-        this.jwtTokenFilter = jwtTokenFilter;
-        this.userService = userService;
-    }
-
     @Bean
-    BCryptPasswordEncoder getBCryptPasswordEncoder(){
+    public BCryptPasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    AuthenticationManager getAuthenticationManager() throws Exception {
+    public AuthenticationManager getAuthenticationManager() throws Exception {
         return super.authenticationManagerBean();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/login").authenticated()
+                .authorizeRequests().antMatchers("/login","/swagger-ui/**").permitAll()
+//                .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+
+
+
 }

@@ -12,13 +12,12 @@ import java.util.Date;
 @Service
 public class TokenManager {
 
-    private static final int validity = 15*60*1000;
+    private static final int validity = 5 * 60 * 1000;
     Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public String generateToken(String userMail){
-
+    public String generateToken(String username) {
         return Jwts.builder()
-                .setSubject(userMail)
+                .setSubject(username)
                 .setIssuer("kahraman")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + validity))
@@ -26,19 +25,19 @@ public class TokenManager {
                 .compact();
     }
 
-    boolean tokenValidate(String token){
-        if(getUserMailToken(token) != null && isExpired(token)){
+    public boolean tokenValidate(String token) {
+        if (getUsernameToken(token) != null && isExpired(token)) {
             return true;
         }
         return false;
     }
 
-    public String getUserMailToken(String token){
+    public String getUsernameToken(String token) {
         Claims claims = getClaims(token);
         return claims.getSubject();
     }
 
-    public boolean isExpired(String token){
+    public boolean isExpired(String token) {
         Claims claims = getClaims(token);
         return claims.getExpiration().after(new Date(System.currentTimeMillis()));
     }
@@ -46,4 +45,5 @@ public class TokenManager {
     private Claims getClaims(String token) {
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
     }
+
 }
