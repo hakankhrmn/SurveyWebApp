@@ -1,6 +1,7 @@
 package com.surveyapp.security;
 
-import com.surveyapp.auth.JwtTokenFilter;
+import com.surveyapp.config.JwtAuthenticationEntryPoint;
+import com.surveyapp.config.JwtTokenFilter;
 import com.surveyapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
 
     @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
     public void configurePasswordEncoder(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userService).passwordEncoder(getBCryptPasswordEncoder());
     }
@@ -46,11 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/login","/swagger-ui/**").permitAll()
+                .authorizeRequests().antMatchers("/login","/register","/swagger-ui/**").permitAll()
+                .antMatchers("/home").hasRole("ADMIN_USER")
 //                .anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 
