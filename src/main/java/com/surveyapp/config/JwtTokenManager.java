@@ -22,23 +22,15 @@ public class JwtTokenManager {
 
         Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
 
-        if (roles.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+        if (roles.contains(new SimpleGrantedAuthority("ADMIN_USER"))) {
             claims.put("isAdmin", true);
         }
-        if (roles.contains(new SimpleGrantedAuthority("ROLE_USER"))) {
+        if (roles.contains(new SimpleGrantedAuthority("END_USER"))) {
             claims.put("isUser", true);
         }
 
         return doGenerateToken(claims, userDetails.getUsername());
 
-
-        /*return Jwts.builder()
-                .setSubject(username)
-                .setIssuer("kahraman")
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + validity))
-                .signWith(key)
-                .compact();*/
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
