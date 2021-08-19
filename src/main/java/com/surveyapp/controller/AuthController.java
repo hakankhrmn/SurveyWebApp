@@ -4,7 +4,7 @@ package com.surveyapp.controller;
 import com.surveyapp.config.JwtTokenManager;
 import com.surveyapp.model.AuthenticationRequest;
 import com.surveyapp.model.AuthenticationResponse;
-import com.surveyapp.model.User;
+import com.surveyapp.model.dto.UserDto;
 import com.surveyapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +54,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
-        return ResponseEntity.ok(userService.save(user));
+    public ResponseEntity<?> saveUser(@RequestBody UserDto userDto) throws Exception {
+        return ResponseEntity.ok(userService.save(userDto));
     }
 }
