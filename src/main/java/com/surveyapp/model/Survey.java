@@ -1,6 +1,5 @@
 package com.surveyapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "surveys")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","questions"})
 public class Survey {
 
     @Id

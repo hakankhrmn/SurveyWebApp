@@ -6,4 +6,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SurveyRepository extends JpaRepository<Survey,Integer> {
+
+    Survey getBySurveyId(int surveyId);
+
+    Survey getBySurveyTopic(String surveyTopic);
+
+/*
+    @Query("select s.surveyTopic from Survey s")
+    List<String> getSurveyTopics();
+*/
 }
