@@ -20,19 +20,19 @@ public class SurveysController {
         this.surveyService = surveyService;
     }
 
-    @RequestMapping(value = "/get/{surveyId}", method = RequestMethod.GET)
+    @GetMapping("/{surveyId}")
     public ResponseEntity<SurveyDto> getBySurveyId(@PathVariable("surveyId") int surveyId){
         SurveyDto surveyDto =surveyService.getBySurveyId(surveyId);
         return new ResponseEntity<>(surveyDto, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getAllSurveys", method = RequestMethod.GET)
+    @GetMapping("")
     public ResponseEntity<List<SurveyDto>> getAllSurveys(){
         List<SurveyDto> surveyDtos = surveyService.getAllSurveys();
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @PostMapping("")
     public ResponseEntity<SurveyDto> createSurvey(@RequestParam String surveyTopic){
         try {
             SurveyDto surveyDto = surveyService.createSurvey(surveyTopic);
@@ -42,7 +42,7 @@ public class SurveysController {
         }
     }
 
-    @RequestMapping(value = "/update/{surveyId}", method = RequestMethod.PUT)
+    @PutMapping("/{surveyId}")
     public ResponseEntity<SurveyDto> updateSurveyTopic(@PathVariable("surveyId") int surveyId, @RequestParam String surveyTopic){
         try {
             SurveyDto surveyDto = surveyService.updateSurveyTopic(surveyId, surveyTopic);
@@ -52,7 +52,7 @@ public class SurveysController {
         }
     }
 
-    @RequestMapping(value = "/delete/{surveyId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{surveyId}")
     public ResponseEntity<HttpStatus> deleteSurvey(@PathVariable("surveyId") int surveyId){
         try {
             surveyService.deleteSurvey(surveyId);
@@ -61,6 +61,4 @@ public class SurveysController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }
