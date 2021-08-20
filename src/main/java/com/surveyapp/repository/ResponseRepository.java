@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResponseRepository extends JpaRepository<Response,Integer> {
-    Response getByResponse(String response);
+    Response getByResponseText(String responseText);
 }

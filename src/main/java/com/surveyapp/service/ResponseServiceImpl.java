@@ -36,7 +36,7 @@ public class ResponseServiceImpl implements ResponseService{
 
     @Override
     public ResponseDto createResponse(int questionId, String responseText) {
-        Response response = responseRepository.getByResponse(responseText);
+        Response response = responseRepository.getByResponseText(responseText);
         if (response !=null && response.getQuestion().getQuestionId()==questionId){
             throw new AlreadyExistsException("RESPONSE ALREADY EXISTS");
         }

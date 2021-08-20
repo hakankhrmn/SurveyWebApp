@@ -42,7 +42,6 @@ public class SurveysController {
         }
     }
 
-
     @RequestMapping(value = "/update/{surveyId}", method = RequestMethod.PUT)
     public ResponseEntity<SurveyDto> updateSurveyTopic(@PathVariable("surveyId") int surveyId, @RequestParam String surveyTopic){
         try {
@@ -62,4 +61,6 @@ public class SurveysController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }

@@ -13,6 +13,4 @@ public class QuestionsController {
     public QuestionsController(QuestionService questionService) {
         this.questionService = questionService;
     }
-
-
 }

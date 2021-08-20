@@ -36,7 +36,8 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public QuestionDto createQuestion(int surveyId, String questionText) {
-        if (questionRepository.getByQuestionText(questionText)!=null){
+        Question question =questionRepository.getByQuestionText(questionText);
+        if (question!=null && question.getSurvey().getSurveyId()==surveyId){
             throw new AlreadyExistsException("QUESTION ALREADY EXISTS");
         }
         Question newQuestion = new Question();
