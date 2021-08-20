@@ -22,7 +22,7 @@ public class Question {
     private int questionId;
 
     @Column(name = "question")
-    private String question;
+    private String questionText;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<Response> responses;

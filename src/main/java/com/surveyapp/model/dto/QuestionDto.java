@@ -14,7 +14,7 @@ public class QuestionDto {
 
     private int questionId;
 
-    private String question;
+    private String questionText;
 
     private List<ResponseDto> responses;
 }

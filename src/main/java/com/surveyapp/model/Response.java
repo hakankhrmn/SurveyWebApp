@@ -20,7 +20,7 @@ public class Response {
     private int responseId;
 
     @Column(name = "response")
-    private String response;
+    private String responseText;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "userResponses")
     private List<User> respondedUsers;

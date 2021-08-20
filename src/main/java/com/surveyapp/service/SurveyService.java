@@ -1,13 +1,13 @@
 package com.surveyapp.service;
 
-import com.surveyapp.model.Survey;
+import com.surveyapp.model.dto.SurveyDto;
 
 import java.util.List;
 
 public interface SurveyService {
-    List<Survey> getAllSurveys();
-    Survey getBySurveyId(int surveyId);
-    Survey createSurvey(String surveyTopic);
-    Survey updateSurveyTopic(int surveyId, String surveyTopic);
+    List<SurveyDto> getAllSurveys();
+    SurveyDto getBySurveyId(int surveyId);
+    SurveyDto createSurvey(String surveyTopic);
+    SurveyDto updateSurveyTopic(int surveyId, String surveyTopic);
     void deleteSurvey(int surveyId);
 }

@@ -3,56 +3,62 @@ package com.surveyapp.service;
 import com.surveyapp.exception.AlreadyExistsException;
 import com.surveyapp.exception.NotFoundException;
 import com.surveyapp.model.Survey;
+import com.surveyapp.model.dto.SurveyDto;
 import com.surveyapp.repository.SurveyRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SurveyServiceImpl implements SurveyService {
 
     private final SurveyRepository surveyRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public SurveyServiceImpl(SurveyRepository surveyRepository) {
+    public SurveyServiceImpl(SurveyRepository surveyRepository, ModelMapper modelMapper) {
         this.surveyRepository = surveyRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<Survey> getAllSurveys() {
-        return surveyRepository.findAll();
+    public List<SurveyDto> getAllSurveys() {
+        List<Survey> surveys =surveyRepository.findAll();
+        return surveys.stream().map(survey -> modelMapper.map(survey,SurveyDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public Survey getBySurveyId(int surveyId) {
+    public SurveyDto getBySurveyId(int surveyId) {
         Survey survey;
         if (surveyRepository.findById(surveyId).isEmpty()){
             throw new NotFoundException("COULD NOT FOUND THE SURVEY");
         }
         survey=surveyRepository.getBySurveyId(surveyId);
-        return survey;
+        return modelMapper.map(survey,SurveyDto.class);
     }
 
     @Override
-    public Survey createSurvey(String surveyTopic) {
+    public SurveyDto createSurvey(String surveyTopic) {
         if (surveyRepository.getBySurveyTopic(surveyTopic)!=null){
             throw new AlreadyExistsException("SURVEY TOPIC ALREADY EXISTS");
         }
         Survey newSurvey = new Survey();
         newSurvey.setSurveyTopic(surveyTopic);
-        return surveyRepository.save(newSurvey);
+        return modelMapper.map(surveyRepository.save(newSurvey),SurveyDto.class);
     }
 
     @Override
-    public Survey updateSurveyTopic(int surveyId, String surveyTopic) {
+    public SurveyDto updateSurveyTopic(int surveyId, String surveyTopic) {
         Survey survey;
         if (surveyRepository.findById(surveyId).isEmpty()){
             throw new NotFoundException("COULD NOT FOUND THE SURVEY");
         }
-        survey = getBySurveyId(surveyId);
+        survey = surveyRepository.getBySurveyId(surveyId);
         survey.setSurveyTopic(surveyTopic);
-        return surveyRepository.save(survey);
+        return modelMapper.map(surveyRepository.save(survey),SurveyDto.class);
     }
 
     @Override

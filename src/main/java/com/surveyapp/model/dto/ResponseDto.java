@@ -14,7 +14,7 @@ public class ResponseDto {
 
     private int responseId;
 
-    private String response;
+    private String responseText;
 
     private List<UserDto> respondedUsers;
 
