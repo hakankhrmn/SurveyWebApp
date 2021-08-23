@@ -1,6 +1,7 @@
 package com.surveyapp.controller;
 
 import com.surveyapp.model.dto.SurveyDto;
+import com.surveyapp.model.dto.SurveyTopicDto;
 import com.surveyapp.service.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,15 +37,15 @@ public class SurveysController {
 
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
-    public ResponseEntity<List<SurveyDto>> getAllSurveys(){
-        List<SurveyDto> surveyDtos = surveyService.getAllSurveys();
+    public ResponseEntity<List<SurveyTopicDto>> getAllSurveys(){
+        List<SurveyTopicDto> surveyDtos = surveyService.getAllSurveys();
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
     }
 
     @GetMapping("/browse")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
-    public ResponseEntity<List<SurveyDto>> getBySurveyTopicContains(@RequestParam String surveyTopic){
-        List<SurveyDto> surveyDtos = surveyService.getBySurveyTopicContains(surveyTopic);
+    public ResponseEntity<List<SurveyTopicDto>> getBySurveyTopicContains(@RequestParam String surveyTopic){
+        List<SurveyTopicDto> surveyDtos = surveyService.getBySurveyTopicContains(surveyTopic);
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
     }
 

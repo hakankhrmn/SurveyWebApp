@@ -4,6 +4,7 @@ import com.surveyapp.exception.AlreadyExistsException;
 import com.surveyapp.exception.NotFoundException;
 import com.surveyapp.model.Survey;
 import com.surveyapp.model.dto.SurveyDto;
+import com.surveyapp.model.dto.SurveyTopicDto;
 import com.surveyapp.repository.SurveyRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,15 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public List<SurveyDto> getAllSurveys() {
+    public List<SurveyTopicDto> getAllSurveys() {
         List<Survey> surveys =surveyRepository.findAll();
-        return surveys.stream().map(survey -> modelMapper.map(survey,SurveyDto.class)).collect(Collectors.toList());
+        return surveys.stream().map(survey -> modelMapper.map(survey,SurveyTopicDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public List<SurveyDto> getBySurveyTopicContains(String surveyTopic) {
+    public List<SurveyTopicDto> getBySurveyTopicContains(String surveyTopic) {
         List<Survey> surveys =surveyRepository.getBySurveyTopicContains(surveyTopic);
-        return surveys.stream().map(survey -> modelMapper.map(survey,SurveyDto.class)).collect(Collectors.toList());
+        return surveys.stream().map(survey -> modelMapper.map(survey,SurveyTopicDto.class)).collect(Collectors.toList());
     }
 
     @Override
