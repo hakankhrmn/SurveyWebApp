@@ -31,6 +31,12 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
+    public List<SurveyDto> getBySurveyTopicContains(String surveyTopic) {
+        List<Survey> surveys =surveyRepository.getBySurveyTopicContains(surveyTopic);
+        return surveys.stream().map(survey -> modelMapper.map(survey,SurveyDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public SurveyDto getBySurveyId(int surveyId) {
         Survey survey;
         if (surveyRepository.findById(surveyId).isEmpty()){

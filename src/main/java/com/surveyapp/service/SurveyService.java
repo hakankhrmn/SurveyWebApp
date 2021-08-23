@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface SurveyService {
     List<SurveyDto> getAllSurveys();
+    List<SurveyDto> getBySurveyTopicContains(String surveyTopic);
     SurveyDto getBySurveyId(int surveyId);
     SurveyDto createSurvey(String surveyTopic);
     SurveyDto updateSurveyTopic(int surveyId, String surveyTopic);

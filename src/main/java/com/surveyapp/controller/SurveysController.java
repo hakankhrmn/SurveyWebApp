@@ -37,6 +37,12 @@ public class SurveysController {
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
     }
 
+    @GetMapping("/browse")
+    public ResponseEntity<List<SurveyDto>> getBySurveyTopicContains(@RequestParam String surveyTopic){
+        List<SurveyDto> surveyDtos = surveyService.getBySurveyTopicContains(surveyTopic);
+        return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
+    }
+
     @PostMapping("")
     public ResponseEntity<SurveyDto> createSurvey(@RequestParam String surveyTopic){
         try {
