@@ -9,7 +9,7 @@ public interface SurveyService {
     List<SurveyTopicDto> getAllSurveys();
     List<SurveyTopicDto> getBySurveyTopicContains(String surveyTopic);
     SurveyDto getBySurveyId(int surveyId);
-    SurveyDto createSurvey(String surveyTopic);
+    SurveyDto createSurvey(String surveyTopic, boolean activated);
     SurveyDto updateSurveyTopic(int surveyId, String surveyTopic);
     void deleteSurvey(int surveyId);
     SurveyDto activateSurvey(int surveyId);

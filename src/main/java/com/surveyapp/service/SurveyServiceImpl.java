@@ -48,12 +48,13 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public SurveyDto createSurvey(String surveyTopic) {
+    public SurveyDto createSurvey(String surveyTopic, boolean activated) {
         if (surveyRepository.getBySurveyTopic(surveyTopic)!=null){
             throw new AlreadyExistsException("SURVEY TOPIC ALREADY EXISTS");
         }
         Survey newSurvey = new Survey();
         newSurvey.setSurveyTopic(surveyTopic);
+        newSurvey.setActivated(activated);
         return modelMapper.map(surveyRepository.save(newSurvey),SurveyDto.class);
     }
 

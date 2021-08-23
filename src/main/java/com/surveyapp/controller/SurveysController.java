@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,11 +59,19 @@ public class SurveysController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('ADMIN_USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
     public ResponseEntity<SurveyDto> createSurvey(@RequestParam String surveyTopic){
         try {
-            SurveyDto surveyDto = surveyService.createSurvey(surveyTopic);
+            SurveyDto surveyDto;
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN_USER"))) {
+                surveyDto = surveyService.createSurvey(surveyTopic, true);
+                return new ResponseEntity<>(surveyDto, HttpStatus.CREATED);
+            }
+
+            surveyDto = surveyService.createSurvey(surveyTopic, false);
             return new ResponseEntity<>(surveyDto, HttpStatus.CREATED);
+
         } catch (Exception e) {
             return new ResponseEntity<>((SurveyDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
