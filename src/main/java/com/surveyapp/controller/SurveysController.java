@@ -25,6 +25,11 @@ public class SurveysController {
         SurveyDto surveyDto =surveyService.getBySurveyId(surveyId);
         return new ResponseEntity<>(surveyDto, HttpStatus.OK);
     }
+    @GetMapping("/{surveyId}/results")
+    public ResponseEntity<SurveyDto> getResults(@PathVariable("surveyId") int surveyId){
+        SurveyDto surveyDto =surveyService.getBySurveyId(surveyId);
+        return new ResponseEntity<>(surveyDto, HttpStatus.OK);
+    }
 
     @GetMapping("")
     public ResponseEntity<List<SurveyDto>> getAllSurveys(){

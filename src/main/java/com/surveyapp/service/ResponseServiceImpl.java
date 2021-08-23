@@ -43,7 +43,7 @@ public class ResponseServiceImpl implements ResponseService{
         Response newResponse = new Response();
         newResponse.setResponseText(responseText);
         newResponse.setQuestion(questionRepository.findById(questionId).get());
-        return modelMapper.map(newResponse,ResponseDto.class);
+        return modelMapper.map(responseRepository.save(newResponse),ResponseDto.class);
     }
 
     @Override
