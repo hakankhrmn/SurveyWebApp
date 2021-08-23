@@ -33,7 +33,7 @@ public class SurveyServiceImpl implements SurveyService {
 
     @Override
     public List<SurveyTopicDto> getBySurveyTopicContains(String surveyTopic) {
-        List<Survey> surveys =surveyRepository.getBySurveyTopicContains(surveyTopic);
+        List<Survey> surveys =surveyRepository.getBySurveyTopicContainsAndActivatedTrue(surveyTopic);
         return surveys.stream().map(survey -> modelMapper.map(survey,SurveyTopicDto.class)).collect(Collectors.toList());
     }
 
@@ -74,5 +74,28 @@ public class SurveyServiceImpl implements SurveyService {
             throw new NotFoundException("COULD NOT FOUND THE SURVEY");
         }
         surveyRepository.deleteById(surveyId);
+    }
+
+    @Override
+    public SurveyDto activateSurvey(int surveyId) {
+        Survey survey;
+        if (surveyRepository.findById(surveyId).isEmpty()){
+            throw new NotFoundException("COULD NOT FOUND THE SURVEY");
+        }
+        survey = surveyRepository.getBySurveyId(surveyId);
+        survey.setActivated(true);
+        return modelMapper.map(surveyRepository.save(survey),SurveyDto.class);
+    }
+
+    @Override
+    public List<SurveyTopicDto> getAllNonActiveSurveys() {
+        List<Survey> surveys =surveyRepository.getAllNonActiveSurveys();
+        return surveys.stream().map(survey -> modelMapper.map(survey,SurveyTopicDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SurveyTopicDto> getAllActiveSurveys() {
+        List<Survey> surveys =surveyRepository.getAllActiveSurveys();
+        return surveys.stream().map(survey -> modelMapper.map(survey,SurveyTopicDto.class)).collect(Collectors.toList());
     }
 }

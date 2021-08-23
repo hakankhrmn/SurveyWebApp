@@ -22,6 +22,9 @@ public class Survey {
     @Column(name = "survey_topic")
     private String surveyTopic;
 
+    @Column(name = "is_activated")
+    private boolean activated;
+
     @OneToMany(mappedBy = "survey")
     private List<Question> questions;
 }

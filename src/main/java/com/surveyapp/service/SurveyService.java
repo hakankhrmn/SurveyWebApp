@@ -12,4 +12,7 @@ public interface SurveyService {
     SurveyDto createSurvey(String surveyTopic);
     SurveyDto updateSurveyTopic(int surveyId, String surveyTopic);
     void deleteSurvey(int surveyId);
+    SurveyDto activateSurvey(int surveyId);
+    List<SurveyTopicDto> getAllNonActiveSurveys();
+    List<SurveyTopicDto> getAllActiveSurveys();
 }

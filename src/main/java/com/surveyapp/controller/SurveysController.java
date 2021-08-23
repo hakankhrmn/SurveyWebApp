@@ -35,10 +35,17 @@ public class SurveysController {
         return new ResponseEntity<>(surveyDto, HttpStatus.OK);
     }
 
+    @GetMapping("/nonactives")
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER')")
+    public ResponseEntity<List<SurveyTopicDto>> getAllNonActiveSurveys(){
+        List<SurveyTopicDto> surveyDtos = surveyService.getAllNonActiveSurveys();
+        return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
+    }
+
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
     public ResponseEntity<List<SurveyTopicDto>> getAllSurveys(){
-        List<SurveyTopicDto> surveyDtos = surveyService.getAllSurveys();
+        List<SurveyTopicDto> surveyDtos = surveyService.getAllActiveSurveys();
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
     }
 
@@ -55,6 +62,17 @@ public class SurveysController {
         try {
             SurveyDto surveyDto = surveyService.createSurvey(surveyTopic);
             return new ResponseEntity<>(surveyDto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>((SurveyDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/nonactives/{surveyId}")
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
+    public ResponseEntity<SurveyDto> activateSurvey(@PathVariable("surveyId") int surveyId){
+        try {
+            SurveyDto surveyDto = surveyService.activateSurvey(surveyId);
+            return new ResponseEntity<>(surveyDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>((SurveyDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
