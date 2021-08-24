@@ -1,9 +1,11 @@
 package com.surveyapp.service;
 
+import com.surveyapp.exception.NotFoundException;
 import com.surveyapp.model.Role;
 import com.surveyapp.model.User;
 import com.surveyapp.model.dto.UserDto;
 import com.surveyapp.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,14 +24,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder bcryptEncoder;
     private final RoleService roleService;
+    private final ModelMapper modelMapper;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder bcryptEncoder, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder bcryptEncoder, RoleService roleService, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.bcryptEncoder = bcryptEncoder;
         this.roleService = roleService;
-
+        this.modelMapper = modelMapper;
     }
 
 
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(UserDto userDto) {
+    public UserDto save(UserDto userDto) {
 
         Role adminUser = roleService.getByRoleName("ADMIN_USER");
         Role endUser = roleService.getByRoleName("END_USER");
@@ -62,7 +65,33 @@ public class UserServiceImpl implements UserService {
         newUser.setUserMail(userDto.getUserMail());
         newUser.setUserPassword(bcryptEncoder.encode(userDto.getUserPassword()));
         newUser.setUserRoles(roles);
-        return userRepository.save(newUser);
+        return modelMapper.map(userRepository.save(newUser),UserDto.class);
+    }
+
+    @Override
+    public void updateResetPasswordToken(String token, String email) {
+        User user = userRepository.getUserByUserMail(email);
+        if (user != null) {
+            user.setResetPasswordToken(token);
+            userRepository.save(user);
+        } else {
+            throw new NotFoundException("Could not find any customer with the email " + email);
+        }
+    }
+
+    @Override
+    public User getByResetPasswordToken(String token) {
+        return userRepository.getByResetPasswordToken(token);
+    }
+
+    @Override
+    public void updatePassword(User user, String newPassword) {
+
+        String encodedPassword = bcryptEncoder.encode(newPassword);
+        user.setUserPassword(encodedPassword);
+
+        user.setResetPasswordToken(null);
+        userRepository.save(user);
     }
 }
 

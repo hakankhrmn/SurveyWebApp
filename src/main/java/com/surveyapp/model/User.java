@@ -39,6 +39,8 @@ public class User {
     @Column(name="user_password")
     private String userPassword;
 
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(

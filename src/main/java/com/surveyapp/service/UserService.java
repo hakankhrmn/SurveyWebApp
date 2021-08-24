@@ -5,5 +5,8 @@ import com.surveyapp.model.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
-   User save(UserDto userDto);
+   UserDto save(UserDto userDto);
+   void updateResetPasswordToken(String token, String email);
+   User getByResetPasswordToken(String token);
+   void updatePassword(User user, String newPassword);
 }
