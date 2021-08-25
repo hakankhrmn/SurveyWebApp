@@ -29,7 +29,7 @@ If an user register to the application, he/she is an END_USER. There is only one
 - psql -U postgres -h localhost <br/>
 - 12345 (write password for default user postgres) <br/>
 - create database survey_app; (Then you should see CREATE DATABASE)
-<br/>
+<br/><br/>
 <img src = "/images/cmd.jpg">
 <br/>
 
@@ -37,7 +37,7 @@ If an user register to the application, he/she is an END_USER. There is only one
 <p>&nbsp; After the clone, git bash to the project folder and write the following</p>
 - mvn clean install <br/>
 - cd target <br/>
-- java -jar surveyapp-0.0.1-SNAPSHOT.jar <br/>
+- java -jar surveyapp-0.0.1-SNAPSHOT.jar <br/><br/>
 
 That's it. Now you can [click this link](http://localhost:8080/swagger-ui/) and test the project.
 
