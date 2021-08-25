@@ -29,9 +29,17 @@ If an user register to the application, he/she is an END_USER. There is only one
 - psql -U postgres -h localhost
 - 12345 (write password for default user postgres)
 - create database survey_app; (Then you should see CREATE DATABASE)
-
+<br/>
 <img src = "/images/cmd.jpg">
+<br/>
 
+<p>&nbsp; Then you can clone the project.</p>
+<p>&nbsp; After the clone, git bash to the project folder and write the following</p>
+- mvn clean install
+- cd target
+- java -jar surveyapp-0.0.1-SNAPSHOT.jar
+
+That's it. Now you can [click this link](https://github.com/hakankhrmn) and test the project
 
 ---
 
