@@ -39,7 +39,7 @@ If an user register to the application, he/she is an END_USER. There is only one
 - cd target <br/>
 - java -jar surveyapp-0.0.1-SNAPSHOT.jar <br/>
 
-<p>&nbsp; That's it. Now you can [click this link](http://localhost:8080/swagger-ui/) and test the project.</p>
+That's it. Now you can [click this link](http://localhost:8080/swagger-ui/) and test the project.
 
 ---
 
