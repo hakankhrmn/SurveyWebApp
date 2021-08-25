@@ -40,6 +40,20 @@ If an user register to the application, he/she is an END_USER. There is only one
 - java -jar surveyapp-0.0.1-SNAPSHOT.jar <br/><br/>
 
 That's it. Now you can [click this link](http://localhost:8080/swagger-ui/) and test the project.
+<br/><br/>
+<img src = "/images/1.jpg">
+
+## How to Test Application
+<br/><br/>
+<p>&nbsp; First you need to login to use methods because they are authorized. ADMIN_USER can use all methods. So, it is better to test with AdMIN_USER</p>
+- Login with username : admin@gmail.com and password: admin from auth-controller.
+<img src = "/images/2.jpg">
+- Copy the token.
+<img src = "/images/3.jpg">
+- Click Authorize button and write 'Bearer ' and paste token. Then Authorize.. (Bearer + space + token)
+<img src = "/images/4.jpg">
+
+Now you can test all the methods. If you want to test END_USER, you can register and apply the same processes with ADMIN_USER.
 
 ---
 
