@@ -36,7 +36,7 @@ public class ForgotPasswordController {
 
         try {
             userService.updateResetPasswordToken(token, email);
-            String resetPasswordLink = Utility.getSiteURL(request) + "/" + token;
+            String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password/" + token;
             sendEmail(email, resetPasswordLink);
             return new ResponseEntity<>(new MessageDto("We have sent a reset password link to your email. Please check."), HttpStatus.OK);
 
