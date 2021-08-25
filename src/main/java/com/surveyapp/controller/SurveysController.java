@@ -1,16 +1,22 @@
 package com.surveyapp.controller;
 
+import com.surveyapp.model.Response;
+import com.surveyapp.model.User;
 import com.surveyapp.model.dto.SurveyDto;
 import com.surveyapp.model.dto.SurveyTopicDto;
+import com.surveyapp.service.ResponseService;
 import com.surveyapp.service.SurveyService;
+import com.surveyapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,10 +24,14 @@ import java.util.List;
 public class SurveysController {
 
     private final SurveyService surveyService;
+    private final UserService userService;
+    private final ResponseService responseService;
 
     @Autowired
-    public SurveysController(SurveyService surveyService) {
+    public SurveysController(SurveyService surveyService, UserService userService, ResponseService responseService) {
         this.surveyService = surveyService;
+        this.userService = userService;
+        this.responseService = responseService;
     }
 
     @GetMapping("/{surveyId}")
@@ -107,6 +117,32 @@ public class SurveysController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{surveyId}/results")
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
+    public ResponseEntity<SurveyDto> submitSurvey(@PathVariable("surveyId") int surveyId, @RequestParam List<Integer> responseIds){
+        try {
+            String username;
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails)principal).getUsername();
+            }else {
+                username = principal.toString();
+            }
+
+            User user = userService.getUserByUserMail(username);
+            List<Response> responses = new ArrayList<>();
+            for (int responseId : responseIds) {
+                responses.add(responseService.findResponse(responseId));
+            }
+            userService.addResponses(user,responses);
+            SurveyDto surveyDto =surveyService.getBySurveyId(surveyId);
+            return new ResponseEntity<>(surveyDto, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>((SurveyDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

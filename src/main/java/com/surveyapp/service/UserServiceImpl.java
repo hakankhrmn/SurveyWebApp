@@ -5,6 +5,7 @@ import com.surveyapp.model.Role;
 import com.surveyapp.model.User;
 import com.surveyapp.model.dto.UserDto;
 import com.surveyapp.repository.UserRepository;
+import com.surveyapp.model.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -85,12 +86,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByUserMail(String username) {
+        return userRepository.getUserByUserMail(username);
+    }
+
+    @Override
     public void updatePassword(User user, String newPassword) {
 
         String encodedPassword = bcryptEncoder.encode(newPassword);
         user.setUserPassword(encodedPassword);
 
         user.setResetPasswordToken(null);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void addResponses(User user, List<Response> responses) {
+        List<Response> oldResponses = user.getUserResponses();
+        for (Response response: responses){
+            oldResponses.add(response);
+        }
+        user.setUserResponses(oldResponses);
         userRepository.save(user);
     }
 }

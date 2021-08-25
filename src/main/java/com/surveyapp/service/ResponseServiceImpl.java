@@ -25,6 +25,16 @@ public class ResponseServiceImpl implements ResponseService{
     }
 
     @Override
+    public Response findResponse(int responseId) {
+        Response response;
+        if (responseRepository.findById(responseId).isEmpty()){
+            throw new NotFoundException("COULD NOT FOUND THE RESPONSE");
+        }
+        response = responseRepository.findById(responseId).get();
+        return response;
+    }
+
+    @Override
     public ResponseDto getByResponseId(int responseId) {
         Response response;
         if (responseRepository.findById(responseId).isEmpty()){
