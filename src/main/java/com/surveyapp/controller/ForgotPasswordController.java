@@ -3,8 +3,10 @@ package com.surveyapp.controller;
 import com.surveyapp.Utility.Utility;
 import com.surveyapp.exception.NotFoundException;
 import com.surveyapp.model.User;
+import com.surveyapp.model.dto.ForgotPasswordDto;
 import com.surveyapp.model.dto.MessageDto;
 import com.surveyapp.model.dto.PasswordResetTokenDto;
+import com.surveyapp.model.dto.ResetPasswordDto;
 import com.surveyapp.service.UserService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @RestController
+@CrossOrigin
 public class ForgotPasswordController {
     private final JavaMailSender mailSender;
     private final UserService userService;
@@ -31,13 +34,14 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/forgot_password")
-    public ResponseEntity<?> processForgotPassword(HttpServletRequest request, @RequestParam String email) {
+    public ResponseEntity<?> processForgotPassword(HttpServletRequest request, @RequestBody ForgotPasswordDto forgotPasswordDto) {
         String token = RandomString.make(30);
+        String userMail = forgotPasswordDto.getUserMail();
 
         try {
-            userService.updateResetPasswordToken(token, email);
+            userService.updateResetPasswordToken(token, userMail);
             String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password/" + token;
-            sendEmail(email, resetPasswordLink);
+            sendEmail(userMail, resetPasswordLink);
             return new ResponseEntity<>(new MessageDto("We have sent a reset password link to your email. Please check."), HttpStatus.OK);
 
         } catch (NotFoundException ex) {
@@ -76,23 +80,22 @@ public class ForgotPasswordController {
     public ResponseEntity<?> showResetPasswordForm(@PathVariable("token") String token) {
         User user = userService.getByResetPasswordToken(token);
         if (user == null) {
-            return new ResponseEntity<>(new MessageDto("Invalid Token"),HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>(new PasswordResetTokenDto(token),HttpStatus.OK);
     }
 
     @PostMapping("/reset_password/{token}")
-    public ResponseEntity<?> processResetPassword(@PathVariable("token") String token,@RequestParam String password) {
+    public ResponseEntity<?> processResetPassword(@PathVariable("token") String token,@RequestBody ResetPasswordDto resetPasswordDto) {
 
         User user = userService.getByResetPasswordToken(token);
-
+        String userPassword = resetPasswordDto.getUserPassword();
         if (user == null) {
             return new ResponseEntity<>(new MessageDto("Invalid Token"),HttpStatus.NOT_FOUND);
         } else {
-            userService.updatePassword(user, password);
+            userService.updatePassword(user, userPassword);
 
             return new ResponseEntity<>(new MessageDto("You have successfully changed your password."),HttpStatus.NOT_FOUND);
         }
     }
-
 }

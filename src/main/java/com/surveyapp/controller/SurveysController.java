@@ -21,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/survey")
+@CrossOrigin
 public class SurveysController {
 
     private final SurveyService surveyService;
