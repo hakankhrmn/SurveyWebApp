@@ -6,6 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Login</div>
+                    <error v-if="error" :error = "error"/>
                     <div class="card-body">
                         <form @submit.prevent="handleSubmit">
 
@@ -43,27 +44,38 @@
 
 <script>
 import axios from 'axios'
+import Error from './Error.vue'
 
 export default {
     name: 'Login',
+    components: {Error},
+    comments: {
+        Error
+    },
     data() {
         return {
             username: '',
-            password: ''
+            password: '',
+            error: ''
         }
     },
     methods: {
         async handleSubmit() {
-            const response = await axios.post('/login', {
-                username: this.username,
-                password: this.password
-            });
+            try {
+                const response = await axios.post('/login', {
+                    username: this.username,
+                    password: this.password
+                });
 
-            this.$store.dispatch('user', response.data.userDto);
-            localStorage.setItem('token', response.data.token);
-            
-            console.log(response);
-            this.$router.push('/');
+                this.$store.dispatch('user', response.data.userDto);
+                localStorage.setItem('token', response.data.token);
+
+                console.log(response);
+                this.$router.push('/');
+            }catch (e) {
+                this.error = 'Invalid mail or password';
+            }
+
         }
     }
 }

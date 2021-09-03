@@ -7,7 +7,8 @@
                     <div class="card-header">Forgot Password</div>
                     <div class="card-body">
                         <form @submit.prevent="handleSubmit">
-
+                            <message v-if="message" :message = "message"/>
+                            <error v-if="error" :error = "error"/>
                             <div class="form-group row">
                                 <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
                                 <div class="col-md-6">
@@ -31,19 +32,31 @@
 
 <script>
 import axios from 'axios'
+import Message from './Message.vue'
+import Error from "./Error.vue";
 export default {
     name: 'ForgotPass',
+    components: {Error, Message},
     data() {
         return {
-            userMail: ''
+            userMail: '',
+            message: '',
+            error: ''
         }
     },
     methods: {
         async handleSubmit(){
-            const response = await axios.post('/forgot_password', {
-                userMail: this.userMail
-            });
-            console.log(response);
+            try{
+                const response = await axios.post('/forgot_password', {
+                    userMail: this.userMail
+                });
+                this.message = response.data.message;
+                this.error = '';
+                console.log(response);
+            }catch (e) {
+                this.error = "Error occured";
+            }
+
         }
     }
 
