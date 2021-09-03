@@ -1,0 +1,74 @@
+<template>
+
+    <main class="login-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Login</div>
+                    <div class="card-body">
+                        <form @submit.prevent="handleSubmit">
+
+                            <div class="form-group row">
+                                <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="email_address" class="form-control" name="email-address" v-model="username" required autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                                <div class="col-md-6">
+                                    <input type="password" id="password" class="form-control" name="password" v-model="password" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Login
+                                </button>
+                                <router-link to="/forgot_password" class="btn btn-link">
+                                    Forgot Your Password?
+                                </router-link>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+    name: 'Login',
+    data() {
+        return {
+            username: '',
+            password: ''
+        }
+    },
+    methods: {
+        async handleSubmit() {
+            const response = await axios.post('/login', {
+                username: this.username,
+                password: this.password
+            });
+
+            this.$store.dispatch('user', response.data.userDto);
+            localStorage.setItem('token', response.data.token);
+            
+            console.log(response);
+            this.$router.push('/');
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>
