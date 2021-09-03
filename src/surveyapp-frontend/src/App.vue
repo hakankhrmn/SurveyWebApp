@@ -19,6 +19,7 @@ export default {
   
   async created() {
       const response = await axios.get('/');
+      this.$store.dispatch('user', response.data);
       console.log(response);
   },
   computed: {

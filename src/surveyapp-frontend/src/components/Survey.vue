@@ -21,7 +21,7 @@
 import axios from "axios";
 
 export default {
-    name: '',
+    name: 'Survey',
     data(){
         return {
             surveys : []

@@ -40,6 +40,7 @@
     </div>
     </main>
 
+
 </template>
 
 <script>
@@ -48,7 +49,9 @@ import Error from './Error.vue'
 
 export default {
     name: 'Login',
-    components: {Error},
+    components: {
+        Error
+    },
     comments: {
         Error
     },
