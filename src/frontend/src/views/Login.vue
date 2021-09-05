@@ -8,7 +8,7 @@
                     <div class="card-header">Login</div>
                     <error v-if="error" :error = "error"/>
                     <div class="card-body">
-                        <form @submit.prevent="handleSubmit">
+                        <form @submit.prevent="handleSubmit" class="my-form">
 
                             <div class="form-group row">
                                 <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
@@ -32,11 +32,13 @@
                                     Forgot Your Password?
                                 </router-link>
                             </div>
+
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
     </main>
 
@@ -45,7 +47,7 @@
 
 <script>
 import axios from 'axios'
-import Error from './Error.vue'
+import Error from '@/components/Error.vue'
 
 export default {
     name: 'Login',
@@ -80,10 +82,49 @@ export default {
             }
 
         }
+
     }
 }
 </script>
 
 <style>
+    @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 
+    .login-form
+    {
+        font-family: Raleway, sans-serif;
+    }
+
+    .my-form
+    {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .my-form .row
+    {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .login-form
+    {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+    .row
+    {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .login-form .row
+    {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .modal-wrapper {
+        display: table-cell;
+        vertical-align: middle;
+    }
 </style>

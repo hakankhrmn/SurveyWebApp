@@ -32,8 +32,8 @@
 
 <script>
 import axios from 'axios'
-import Message from './Message.vue'
-import Error from "./Error.vue";
+import Message from '@/components/Message.vue'
+import Error from '@/components/Error.vue'
 export default {
     name: 'ForgotPass',
     components: {Error, Message},

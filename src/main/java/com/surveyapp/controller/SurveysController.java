@@ -64,24 +64,24 @@ public class SurveysController {
 
     @GetMapping("/browse")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
-    public ResponseEntity<List<SurveyTopicDto>> getBySurveyTopicContains(@RequestParam String surveyTopic){
-        List<SurveyTopicDto> surveyDtos = surveyService.getBySurveyTopicContains(surveyTopic);
+    public ResponseEntity<List<SurveyTopicDto>> getBySurveyTopicContains(@RequestBody SurveyDto surveyDto){
+        List<SurveyTopicDto> surveyDtos = surveyService.getBySurveyTopicContains(surveyDto.getSurveyTopic());
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
     }
 
     @PostMapping("")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
-    public ResponseEntity<SurveyDto> createSurvey(@RequestParam String surveyTopic){
+    public ResponseEntity<SurveyDto> createSurvey(@RequestBody SurveyDto surveyDto){
         try {
-            SurveyDto surveyDto;
+            SurveyDto newsurveyDto;
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN_USER"))) {
-                surveyDto = surveyService.createSurvey(surveyTopic, true);
-                return new ResponseEntity<>(surveyDto, HttpStatus.CREATED);
+                newsurveyDto = surveyService.createSurvey(surveyDto.getSurveyTopic(), true);
+                return new ResponseEntity<>(newsurveyDto, HttpStatus.CREATED);
             }
 
-            surveyDto = surveyService.createSurvey(surveyTopic, false);
-            return new ResponseEntity<>(surveyDto, HttpStatus.CREATED);
+            newsurveyDto = surveyService.createSurvey(surveyDto.getSurveyTopic(), false);
+            return new ResponseEntity<>(newsurveyDto, HttpStatus.CREATED);
 
         } catch (Exception e) {
             return new ResponseEntity<>((SurveyDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -101,10 +101,10 @@ public class SurveysController {
 
     @PutMapping("/{surveyId}")
     @PreAuthorize("hasAuthority('ADMIN_USER')")
-    public ResponseEntity<SurveyDto> updateSurveyTopic(@PathVariable("surveyId") int surveyId, @RequestParam String surveyTopic){
+    public ResponseEntity<SurveyDto> updateSurveyTopic(@PathVariable("surveyId") int surveyId, @RequestBody SurveyDto surveyDto){
         try {
-            SurveyDto surveyDto = surveyService.updateSurveyTopic(surveyId, surveyTopic);
-            return new ResponseEntity<>(surveyDto, HttpStatus.OK);
+            SurveyDto updateSurveyTopic= surveyService.updateSurveyTopic(surveyId, surveyDto.getSurveyTopic());
+            return new ResponseEntity<>(updateSurveyTopic, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>((SurveyDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

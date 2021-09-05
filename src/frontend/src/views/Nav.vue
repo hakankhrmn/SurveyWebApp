@@ -47,5 +47,18 @@ export default {
 </script>
 
 <style>
+    @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+    .navbar-laravel
+    {
+        box-shadow: 0 2px 4px rgba(0,0,0,.04);
+    }
+
+    .navbar-brand , .nav-link
+    {
+        font-family: Raleway, sans-serif;
+    }
+
+
 
 </style>
