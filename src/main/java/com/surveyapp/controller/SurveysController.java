@@ -49,7 +49,7 @@ public class SurveysController {
     }
 
     @GetMapping("/nonactives")
-    @PreAuthorize("hasAnyAuthority('ADMIN_USER')")
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     public ResponseEntity<List<SurveyTopicDto>> getAllNonActiveSurveys(){
         List<SurveyTopicDto> surveyDtos = surveyService.getAllNonActiveSurveys();
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);

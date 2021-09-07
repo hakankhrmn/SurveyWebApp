@@ -74,7 +74,7 @@ export default {
 
                 this.$store.dispatch('user', response.data.userDto);
                 localStorage.setItem('token', response.data.token);
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
                 console.log(response);
                 this.$router.push('/');
             }catch (e) {
