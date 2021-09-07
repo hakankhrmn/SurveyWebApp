@@ -74,7 +74,7 @@ export default {
 
                 this.$store.dispatch('user', response.data.userDto);
                 localStorage.setItem('token', response.data.token);
-
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
                 console.log(response);
                 this.$router.push('/');
             }catch (e) {
@@ -122,9 +122,5 @@ export default {
     {
         margin-left: 0;
         margin-right: 0;
-    }
-    .modal-wrapper {
-        display: table-cell;
-        vertical-align: middle;
     }
 </style>

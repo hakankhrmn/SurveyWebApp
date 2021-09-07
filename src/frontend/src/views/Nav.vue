@@ -28,14 +28,16 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import axios from 'axios'
 
 export default {
     name: 'Nav',
     methods: {
         handleClick() {
             localStorage.removeItem('token');
+            delete axios.defaults.headers.common["Authorization"];
             this.$store.dispatch('user', null)
-            this.$router.push('/');
+            this.$router.go();
         }
     },
     computed: {
