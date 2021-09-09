@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Surveys from './views/Surveys.vue'
+import Survey from './views/Survey.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import ForgotPass from './views/ForgotPass.vue'
@@ -14,6 +15,7 @@ export default new Router({
     routes: [
         {path: '/', name: 'Home', component: Home},
         {path: '/survey', name: 'Surveys', component: Surveys},
+        {path: '/survey/:surveyId', name: 'Survey', component: Survey},
         {path: '/survey/nonactives', name: 'NonActiveSurveys', component: NonActiveSurveys},
         {path: '/login', name: 'Login', component: Login},
         {path: '/register', name: 'Register', component: Register},

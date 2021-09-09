@@ -2,6 +2,7 @@ package com.surveyapp.controller;
 
 import com.surveyapp.model.Response;
 import com.surveyapp.model.User;
+import com.surveyapp.model.dto.ResponseIdsDto;
 import com.surveyapp.model.dto.SurveyDto;
 import com.surveyapp.model.dto.SurveyTopicDto;
 import com.surveyapp.service.ResponseService;
@@ -123,7 +124,7 @@ public class SurveysController {
 
     @PostMapping("/{surveyId}/results")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
-    public ResponseEntity<SurveyDto> submitSurvey(@PathVariable("surveyId") int surveyId, @RequestParam List<Integer> responseIds){
+    public ResponseEntity<SurveyDto> submitSurvey(@PathVariable("surveyId") int surveyId, @RequestBody ResponseIdsDto responseIdsDto){
         try {
             String username;
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -135,7 +136,7 @@ public class SurveysController {
 
             User user = userService.getUserByUserMail(username);
             List<Response> responses = new ArrayList<>();
-            for (int responseId : responseIds) {
+            for (int responseId : responseIdsDto.getResponseIds()) {
                 responses.add(responseService.findResponse(responseId));
             }
             userService.addResponses(user,responses);

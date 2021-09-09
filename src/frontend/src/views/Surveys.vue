@@ -10,7 +10,7 @@
             <mdb-tbl-head color="black" textWhite>
                 <tr>
                     <th> Survey Topic</th>
-                    <th> Show Survey</th>
+                    <th> Response Survey</th>
                     <th> Update Survey</th>
                     <th> Delete Survey</th>
                 <tr/>
@@ -19,7 +19,7 @@
                 <tr v-for="survey in filteredSurveys" v-bind:key="survey.surveyId">
                     <td> {{survey.surveyTopic}}</td>
                     <td>
-                        <mdb-btn color="blue" @click="showSurvey(survey.surveyId)">Show Survey</mdb-btn>
+                        <mdb-btn color="blue" @click="responseSurvey(survey.surveyId)">Response Survey</mdb-btn>
                     </td>
                     <td>
                         <mdb-btn color="green"
@@ -54,7 +54,7 @@
             </mdb-container>
         </div>
 
-        <mdb-btn color="default" @click.native="getSurveys">Show All Surveys</mdb-btn>
+
         <mdb-btn color="default" @click.native="showNonActiveSurveys">Show Non-Active Surveys</mdb-btn>
 
 
@@ -120,7 +120,7 @@
                     surveyTopic: this.surveyTopic
                 });
                 console.log(response);
-                this.$router.go();
+                this.getSurveys();
             },
 
             async updateSurvey(surveyId) {
@@ -128,22 +128,21 @@
                     surveyTopic: this.surveyTopic
                 });
                 console.log(response);
-                this.$router.go();
+                this.getSurveys();
             },
 
             async deleteSurvey(surveyId) {
                 const response = await axios.delete('/survey/' + surveyId);
                 console.log(response);
-                this.$router.go();
+                this.getSurveys();
             },
 
-            async showSurvey(surveyId) {
+            async responseSurvey(surveyId) {
                 this.$router.push('/survey/' + surveyId)
             },
 
             async showNonActiveSurveys() {
-                const response = await axios.get('/survey/nonactives');
-                this.surveys = response.data;
+                this.$router.push('/survey/nonactives');
             },
 
             handleOperation(surveyId) {

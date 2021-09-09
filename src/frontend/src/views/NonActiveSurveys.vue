@@ -21,6 +21,10 @@
             </mdb-tbl-body>
         </mdb-tbl>
 
+        <br/>
+
+        <mdb-btn color="default" @click.native="goSurveys">Show Active Surveys</mdb-btn>
+
     </div>
 </template>
 
@@ -44,6 +48,10 @@
         },
 
         methods: {
+            async goSurveys() {
+                this.$router.push('/survey');
+            },
+
             async getNonActiveSurveys() {
                 const response = await axios.get('/survey/nonactives');
                 this.surveys = response.data;
@@ -52,7 +60,7 @@
             async activateSurvey(surveyId) {
                 const response = await axios.put('/survey/nonactives/' + surveyId);
                 console.log(response);
-                this.$router.go();
+                this.getNonActiveSurveys();
             }
         },
 
