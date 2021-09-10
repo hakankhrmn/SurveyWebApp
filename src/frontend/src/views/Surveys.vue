@@ -9,15 +9,19 @@
         <mdb-tbl striped>
             <mdb-tbl-head color="black" textWhite>
                 <tr>
-                    <th> Survey Topic</th>
-                    <th> Response Survey</th>
-                    <th> Update Survey</th>
-                    <th> Delete Survey</th>
+                    <th>Survey Topic</th>
+                    <th>Show Results and Details</th>
+                    <th>Response Survey</th>
+                    <th>Update Survey</th>
+                    <th>Delete Survey</th>
                 <tr/>
             </mdb-tbl-head>
             <mdb-tbl-body>
                 <tr v-for="survey in filteredSurveys" v-bind:key="survey.surveyId">
                     <td> {{survey.surveyTopic}}</td>
+                    <td>
+                        <mdb-btn color="blue" @click="detailsSurvey(survey.surveyId)">Show Results and Details</mdb-btn>
+                    </td>
                     <td>
                         <mdb-btn color="blue" @click="responseSurvey(survey.surveyId)">Response Survey</mdb-btn>
                     </td>
@@ -143,6 +147,10 @@
 
             async showNonActiveSurveys() {
                 this.$router.push('/survey/nonactives');
+            },
+
+            async detailsSurvey(surveyId) {
+                this.$router.push('/survey/' + surveyId + '/details')
             },
 
             handleOperation(surveyId) {

@@ -28,10 +28,10 @@ public class QuestionsController {
 
     @PostMapping("/survey/{surveyId}/question")
     @PreAuthorize("hasAuthority('ADMIN_USER')")
-    public ResponseEntity<QuestionDto> createQuestion(@PathVariable("surveyId") int surveyId, @RequestParam String questionText){
+    public ResponseEntity<QuestionDto> createQuestion(@PathVariable("surveyId") int surveyId, @RequestBody QuestionDto questionDto){
         try {
-            QuestionDto questionDto = questionService.createQuestion(surveyId, questionText);
-            return new ResponseEntity<>(questionDto,HttpStatus.OK);
+            QuestionDto newQuestionDto = questionService.createQuestion(surveyId, questionDto.getQuestionText());
+            return new ResponseEntity<>(newQuestionDto,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>((QuestionDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -39,10 +39,10 @@ public class QuestionsController {
 
     @PutMapping("/survey/{surveyId}/question/{questionId}")
     @PreAuthorize("hasAuthority('ADMIN_USER')")
-    public ResponseEntity<QuestionDto> updateQuestion(@PathVariable("questionId") int questionId, @RequestParam String questionText){
+    public ResponseEntity<QuestionDto> updateQuestion(@PathVariable("questionId") int questionId, @RequestBody QuestionDto questionDto){
         try {
-            QuestionDto questionDto = questionService.updateQuestion(questionId,questionText);
-            return new ResponseEntity<>(questionDto,HttpStatus.OK);
+            QuestionDto newQuestionDto = questionService.updateQuestion(questionId,questionDto.getQuestionText());
+            return new ResponseEntity<>(newQuestionDto,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>((QuestionDto) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
