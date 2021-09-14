@@ -25,6 +25,6 @@ public class Survey {
     @Column(name = "is_activated")
     private boolean activated;
 
-    @OneToMany(mappedBy = "survey")
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Question> questions;
 }

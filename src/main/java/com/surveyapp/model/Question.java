@@ -24,10 +24,10 @@ public class Question {
     @Column(name = "question")
     private String questionText;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Response> responses;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "survey_id")
     private Survey survey;
 

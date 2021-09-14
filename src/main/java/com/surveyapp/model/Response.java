@@ -25,7 +25,7 @@ public class Response {
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "userResponses")
     private List<User> respondedUsers;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "question_id")
     private Question question;
 }
