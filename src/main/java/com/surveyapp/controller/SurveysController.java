@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/survey")
 @CrossOrigin
 public class SurveysController {
 
@@ -36,13 +35,13 @@ public class SurveysController {
         this.responseService = responseService;
     }
 
-    @GetMapping("/{surveyId}")
+    @GetMapping("/survey/{surveyId}")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
     public ResponseEntity<SurveyDto> getBySurveyId(@PathVariable("surveyId") int surveyId){
         SurveyDto surveyDto =surveyService.getBySurveyId(surveyId);
         return new ResponseEntity<>(surveyDto, HttpStatus.OK);
     }
-    @GetMapping("/{surveyId}/results")
+    @GetMapping("/survey/{surveyId}/results")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
     public ResponseEntity<SurveyDto> getResults(@PathVariable("surveyId") int surveyId){
         SurveyDto surveyDto =surveyService.getBySurveyId(surveyId);
@@ -56,7 +55,7 @@ public class SurveysController {
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/survey")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
     public ResponseEntity<List<SurveyTopicDto>> getAllSurveys(){
         List<SurveyTopicDto> surveyDtos = surveyService.getAllActiveSurveys();
@@ -70,7 +69,7 @@ public class SurveysController {
         return new ResponseEntity<>(surveyDtos, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping("/survey")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
     public ResponseEntity<SurveyDto> createSurvey(@RequestBody SurveyDto surveyDto){
         try {
@@ -100,7 +99,7 @@ public class SurveysController {
         }
     }
 
-    @PutMapping("/{surveyId}")
+    @PutMapping("/survey/{surveyId}")
     @PreAuthorize("hasAuthority('ADMIN_USER')")
     public ResponseEntity<SurveyDto> updateSurveyTopic(@PathVariable("surveyId") int surveyId, @RequestBody SurveyDto surveyDto){
         try {
@@ -111,7 +110,7 @@ public class SurveysController {
         }
     }
 
-    @DeleteMapping("/{surveyId}")
+    @DeleteMapping("/survey/{surveyId}")
     @PreAuthorize("hasAuthority('ADMIN_USER')")
     public ResponseEntity<HttpStatus> deleteSurvey(@PathVariable("surveyId") int surveyId){
         try {
@@ -122,7 +121,7 @@ public class SurveysController {
         }
     }
 
-    @PostMapping("/{surveyId}/results")
+    @PostMapping("/survey/{surveyId}/results")
     @PreAuthorize("hasAnyAuthority('ADMIN_USER','END_USER')")
     public ResponseEntity<SurveyDto> submitSurvey(@PathVariable("surveyId") int surveyId, @RequestBody ResponseIdsDto responseIdsDto){
         try {
